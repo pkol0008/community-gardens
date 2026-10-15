@@ -1,4 +1,3 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "When Were the Listed Gardens Established?",
@@ -33,7 +32,6 @@
     },
     "y": {
       "aggregate": "count",
-      "field": "garden",
       "type": "quantitative",
       "title": "Number of directory records"
     },
@@ -46,7 +44,6 @@
       },
       {
         "aggregate": "count",
-        "field": "garden",
         "type": "quantitative",
         "title": "Gardens recorded"
       }
