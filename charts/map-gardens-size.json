@@ -78,7 +78,7 @@
           "as": "state_name"
         },
         {
-          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), regexp('\\\\s', 'g'), ''))",
+          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), ' ', ''))",
           "as": "garden_size"
         }
       ],
