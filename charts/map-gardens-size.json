@@ -6,7 +6,6 @@
     "type": "mercator"
   },
   "layer": [
-
     {
       "data": {
         "url": "data/states.geojson",
@@ -24,7 +23,7 @@
           "lookup": "state_name",
           "from": {
             "data": {
-              "url": "../data/ds1-counts.csv",
+              "url": "data/ds1-counts.csv",
               "format": {
                 "type": "csv"
               }
@@ -59,10 +58,9 @@
         ]
       }
     },
-
     {
       "data": {
-        "url": "../data/ds1.csv",
+        "url": "data/ds1.csv",
         "format": {
           "type": "csv",
           "parse": {
@@ -76,11 +74,11 @@
           "filter": "isValid(datum.lat) && isValid(datum.long)"
         },
         {
-          "calculate": "indexof(['VIC', 'Victoria'], trim(datum.state)) >= 0 ? 'Victoria' : indexof(['NSW', 'New South Wales'], trim(datum.state)) >= 0 ? 'New South Wales' : indexof(['QLD', 'Queensland'], trim(datum.state)) >= 0 ? 'Queensland' : indexof(['SA', 'South Australia'], trim(datum.state)) >= 0 ? 'South Australia' : indexof(['WA', 'Western Australia'], trim(datum.state)) >= 0 ? 'Western Australia' : indexof(['TAS', 'Tasmania'], trim(datum.state)) >= 0 ? 'Tasmania' : indexof(['NT', 'Northern Territory'], trim(datum.state)) >= 0 ? 'Northern Territory' : indexof(['ACT', 'Australian Capital Territory'], trim(datum.state)) >= 0 ? 'Australian Capital Territory' : trim(datum.state)",
+          "calculate": "indexOf(['VIC', 'Victoria'], trim(datum.state)) >= 0 ? 'Victoria' : indexOf(['NSW', 'New South Wales'], trim(datum.state)) >= 0 ? 'New South Wales' : indexOf(['QLD', 'Queensland'], trim(datum.state)) >= 0 ? 'Queensland' : indexOf(['SA', 'South Australia'], trim(datum.state)) >= 0 ? 'South Australia' : indexOf(['WA', 'Western Australia'], trim(datum.state)) >= 0 ? 'Western Australia' : indexOf(['TAS', 'Tasmania'], trim(datum.state)) >= 0 ? 'Tasmania' : indexOf(['NT', 'Northern Territory'], trim(datum.state)) >= 0 ? 'Northern Territory' : indexOf(['ACT', 'Australian Capital Territory'], trim(datum.state)) >= 0 ? 'Australian Capital Territory' : trim(datum.state)",
           "as": "state_name"
         },
         {
-          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
+          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), regexp('\\\\s', 'g'), ''))",
           "as": "garden_size"
         }
       ],
@@ -113,6 +111,5 @@
         ]
       }
     }
-
   ]
 }
