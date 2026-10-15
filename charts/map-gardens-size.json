@@ -74,7 +74,7 @@
           "filter": "isValid(datum.lat) && isValid(datum.long)"
         },
         {
-          "calculate": "indexof(['VIC', 'Victoria'], trim(datum.state)) >= 0 ? 'Victoria' : indexof(['NSW', 'New South Wales'], trim(datum.state)) >= 0 ? 'New South Wales' : indexof(['QLD', 'Queensland'], trim(datum.state)) >= 0 ? 'Queensland' : indexof(['SA', 'South Australia'], trim(datum.state)) >= 0 ? 'South Australia' : indexof(['WA', 'Western Australia'], trim(datum.state)) >= 0 ? 'Western Australia' : indexof(['TAS', 'Tasmania'], trim(datum.state)) >= 0 ? 'Tasmania' : indexof(['NT', 'Northern Territory'], trim(datum.state)) >= 0 ? 'Northern Territory' : indexof(['ACT', 'Australian Capital Territory'], trim(datum.state)) >= 0 ? 'Australian Capital Territory' : trim(datum.state)",
+          "calculate": "datum.state == 'VIC' || datum.state == 'Victoria' ? 'Victoria' : datum.state == 'NSW' || datum.state == 'New South Wales' ? 'New South Wales' : datum.state == 'QLD' || datum.state == 'Queensland' ? 'Queensland' : datum.state == 'SA' || datum.state == 'South Australia' ? 'South Australia' : datum.state == 'WA' || datum.state == 'Western Australia' ? 'Western Australia' : datum.state == 'TAS' || datum.state == 'Tasmania' ? 'Tasmania' : datum.state == 'NT' || datum.state == 'Northern Territory' ? 'Northern Territory' : datum.state == 'ACT' || datum.state == 'Australian Capital Territory' ? 'Australian Capital Territory' : trim(datum.state)",
           "as": "state_name"
         },
         {
