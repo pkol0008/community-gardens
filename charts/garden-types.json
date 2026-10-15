@@ -1,0 +1,46 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "What Types of Community Gardens Are Listed?",
+  "description": "A ranking of garden types recorded in the directory.",
+  "width": 620,
+  "height": {"step": 32},
+  "data": {
+    "url": "../data/ds1.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.garden_type) && trim(datum.garden_type) !== ''"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "color": "#d97991",
+    "cornerRadiusEnd": 4
+  },
+  "encoding": {
+    "y": {
+      "field": "garden_type",
+      "type": "nominal",
+      "sort": "-x",
+      "title": "Garden type",
+      "axis": {"labelLimit": 250}
+    },
+    "x": {
+      "aggregate": "count",
+      "field": "garden",
+      "type": "quantitative",
+      "title": "Number of listed gardens"
+    },
+    "tooltip": [
+      {"field": "garden_type", "type": "nominal", "title": "Garden type"},
+      {
+        "aggregate": "count",
+        "field": "garden",
+        "type": "quantitative",
+        "title": "Number of gardens"
+      }
+    ]
+  }
+}

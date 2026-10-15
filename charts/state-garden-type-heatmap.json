@@ -1,0 +1,66 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Which Garden Types Are Listed in Each State?",
+  "description": "A heatmap of garden directory records by state or territory and garden type.",
+  "width": 650,
+  "height": 320,
+  "data": {
+    "url": "../data/ds1.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "calculate": "datum.state == 'VIC' || datum.state == 'Victoria' ? 'Victoria' : datum.state == 'NSW' || datum.state == 'New South Wales' ? 'New South Wales' : datum.state == 'QLD' || datum.state == 'Queensland' ? 'Queensland' : datum.state == 'SA' || datum.state == 'South Australia' ? 'South Australia' : datum.state == 'WA' || datum.state == 'Western Australia' ? 'Western Australia' : datum.state == 'TAS' || datum.state == 'Tasmania' ? 'Tasmania' : datum.state == 'NT' || datum.state == 'Northern Territory' ? 'Northern Territory' : datum.state == 'ACT' || datum.state == 'Australian Capital Territory' ? 'Australian Capital Territory' : trim(datum.state)",
+      "as": "state_name"
+    },
+    {
+      "filter": "isValid(datum.state_name) && datum.state_name !== '' && isValid(datum.garden_type) && trim(datum.garden_type) !== ''"
+    }
+  ],
+  "mark": {
+    "type": "rect",
+    "stroke": "#ffffff",
+    "strokeWidth": 1
+  },
+  "encoding": {
+    "x": {
+      "field": "garden_type",
+      "type": "nominal",
+      "title": "Garden type",
+      "axis": {"labelAngle": -30, "labelLimit": 180}
+    },
+    "y": {
+      "field": "state_name",
+      "type": "nominal",
+      "title": "State or territory",
+      "sort": [
+        "Western Australia",
+        "Northern Territory",
+        "South Australia",
+        "Queensland",
+        "New South Wales",
+        "Victoria",
+        "Australian Capital Territory",
+        "Tasmania"
+      ]
+    },
+    "color": {
+      "aggregate": "count",
+      "field": "garden",
+      "type": "quantitative",
+      "title": "Garden records",
+      "scale": {"scheme": "reds"}
+    },
+    "tooltip": [
+      {"field": "state_name", "type": "nominal", "title": "State or territory"},
+      {"field": "garden_type", "type": "nominal", "title": "Garden type"},
+      {
+        "aggregate": "count",
+        "field": "garden",
+        "type": "quantitative",
+        "title": "Garden records"
+      }
+    ]
+  }
+}

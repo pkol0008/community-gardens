@@ -1,0 +1,63 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "How Does Recorded Public Access Vary by Garden Type?",
+  "description": "The proportion of directory records in each public-access category, grouped by garden type.",
+  "width": 650,
+  "height": 360,
+  "data": {
+    "url": "../data/ds1.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.garden_type) && trim(datum.garden_type) !== '' && isValid(datum.public_access) && trim(datum.public_access) !== ''"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "stroke": "#ffffff",
+    "strokeWidth": 0.5
+  },
+  "encoding": {
+    "y": {
+      "field": "garden_type",
+      "type": "nominal",
+      "sort": "-x",
+      "title": "Garden type",
+      "axis": {"labelLimit": 220}
+    },
+    "x": {
+      "aggregate": "count",
+      "field": "garden",
+      "type": "quantitative",
+      "stack": "normalize",
+      "title": "Share of records",
+      "axis": {"format": ".0%"}
+    },
+    "color": {
+      "field": "public_access",
+      "type": "nominal",
+      "title": "Recorded public access",
+      "scale": {"scheme": "tableau10"},
+      "legend": {
+        "orient": "bottom",
+        "direction": "vertical",
+        "columns": 1,
+        "labelLimit": 500,
+        "titleLimit": 500,
+        "labelFontSize": 11
+      }
+    },
+    "tooltip": [
+      {"field": "garden_type", "type": "nominal", "title": "Garden type"},
+      {"field": "public_access", "type": "nominal", "title": "Public access"},
+      {
+        "aggregate": "count",
+        "field": "garden",
+        "type": "quantitative",
+        "title": "Records in category"
+      }
+    ]
+  }
+}

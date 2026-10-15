@@ -1,0 +1,118 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 650,
+  "height": 550,
+  "projection": {
+    "type": "mercator"
+  },
+  "layer": [
+
+    {
+      "data": {
+        "url": "../data/states.geojson",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.properties.STATE_NAME",
+          "as": "state_name"
+        },
+        {
+          "lookup": "state_name",
+          "from": {
+            "data": {
+              "url": "../data/ds1-counts.csv",
+              "format": {
+                "type": "csv"
+              }
+            },
+            "key": "State",
+            "fields": ["Count"]
+          }
+        },
+        {
+          "calculate": "toNumber(datum.Count)",
+          "as": "garden_count"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#88857e",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "color": {
+          "field": "garden_count",
+          "type": "quantitative",
+          "title": "Number of gardens",
+          "scale": {
+            "domainMin": 0,
+            "range": ["#ffffff", "#c62828"]
+          }
+        },
+        "tooltip": [
+          { "field": "state_name", "type": "nominal", "title": "State" },
+          { "field": "garden_count", "type": "quantitative", "title": "Number of gardens" }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "url": "../data/ds1.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "lat": "number",
+            "long": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "isValid(datum.lat) && isValid(datum.long)"
+        },
+        {
+          "calculate": "indexof(['VIC', 'Victoria'], trim(datum.state)) >= 0 ? 'Victoria' : indexof(['NSW', 'New South Wales'], trim(datum.state)) >= 0 ? 'New South Wales' : indexof(['QLD', 'Queensland'], trim(datum.state)) >= 0 ? 'Queensland' : indexof(['SA', 'South Australia'], trim(datum.state)) >= 0 ? 'South Australia' : indexof(['WA', 'Western Australia'], trim(datum.state)) >= 0 ? 'Western Australia' : indexof(['TAS', 'Tasmania'], trim(datum.state)) >= 0 ? 'Tasmania' : indexof(['NT', 'Northern Territory'], trim(datum.state)) >= 0 ? 'Northern Territory' : indexof(['ACT', 'Australian Capital Territory'], trim(datum.state)) >= 0 ? 'Australian Capital Territory' : trim(datum.state)",
+          "as": "state_name"
+        },
+        {
+          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
+          "as": "garden_size"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "color": "#1565c0",
+        "opacity": 0.6,
+        "stroke": "#ffffff",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "longitude": { "field": "long", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "size": {
+          "condition": {
+            "test": "isValid(datum.garden_size) && datum.garden_size > 0",
+            "field": "garden_size",
+            "type": "quantitative",
+            "scale": { "type": "sqrt", "range": [30, 500] },
+            "legend": { "title": "Garden area (m²)" }
+          },
+          "value": 45
+        },
+        "tooltip": [
+          { "field": "garden", "type": "nominal", "title": "Garden" },
+          { "field": "suburb", "type": "nominal", "title": "Suburb" },
+          { "field": "state_name", "type": "nominal", "title": "State" },
+          { "field": "year_established", "type": "nominal", "title": "Year established" },
+          { "field": "garden_size", "type": "quantitative", "title": "Garden area (m²)" }
+        ]
+      }
+    }
+
+  ]
+}

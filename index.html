@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Community Gardens in Australia</title>
+  <meta
+    name="description"
+    content="Explore the locations, sizes, garden types and recorded public access of community gardens across Australia."
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <main>
+    <header class="intro">
+      <p class="eyebrow">AUSTRALIA · COMMUNITY · GARDENING</p>
+      <h1>Growing Together</h1>
+      <p class="subtitle">
+        Exploring Australia's community gardens: where they are,
+        what they look like, and how they are recorded as being accessed.
+      </p>
+      <p class="data-note">
+        This exploration uses a community garden directory.
+        The charts describe the records available in that dataset,
+        which may not represent every community garden in Australia today.
+      </p>
+    </header>
+
+    <section class="chart-section">
+      <p class="section-number">01 / WHERE</p>
+      <h2>Where are the gardens?</h2>
+      <p>
+        Explore the geographic distribution of listed gardens.
+        The state shading shows the number of directory records,
+        while the circles show individual gardens and their recorded sizes.
+      </p>
+      <div id="chart1" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">02 / ACCESS</p>
+      <h2>Are the gardens open to the public?</h2>
+      <p>
+        Explore the recorded public-access categories and where those
+        gardens are located. These categories reflect the directory
+        entries rather than independently verified opening policies.
+      </p>
+      <div id="chart2" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">03 / GARDEN TYPES</p>
+      <h2>What kinds of gardens are listed?</h2>
+      <p>
+        Compare the frequency of the garden types recorded in the directory.
+        More records do not necessarily mean a type is more common
+        across the entire country.
+      </p>
+      <div id="chart3" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">04 / HISTORY</p>
+      <h2>When were the gardens established?</h2>
+      <p>
+        See how reported establishment years are distributed across the
+        listed gardens. This chart counts gardens by their reported
+        establishment year; it does not estimate the total number
+        of gardens that existed in each historical year.
+      </p>
+      <div id="chart4" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">05 / SIZE</p>
+      <h2>How large are the gardens?</h2>
+      <p>
+        A histogram groups recorded garden areas into ranges, revealing
+        the spread of garden sizes and whether the directory includes
+        particularly large sites.
+      </p>
+      <div id="chart5" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">06 / ACCESS & TYPE</p>
+      <h2>Does recorded access vary by garden type?</h2>
+      <p>
+        Compare the proportions of public-access categories within each
+        garden type. Some categories or types may have relatively few
+        records, so interpret small groups cautiously.
+      </p>
+      <div id="chart6" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">07 / REGIONAL PATTERNS</p>
+      <h2>Which garden types appear across the states?</h2>
+      <p>
+        The heatmap compares counts across states and territories.
+        It helps reveal where directory records are concentrated,
+        but does not adjust for population or the completeness of
+        the directory in each region.
+      </p>
+      <div id="chart7" class="chart"></div>
+    </section>
+
+    <section class="chart-section">
+      <p class="section-number">08 / REGIONAL SIZE</p>
+      <h2>How does garden size vary by state?</h2>
+      <p>
+        Box plots compare the distribution of recorded garden areas.
+        The boxes show the middle half of the observations, while
+        whiskers and outliers help reveal variation within each region.
+      </p>
+      <div id="chart8" class="chart"></div>
+    </section>
+  </main>
+
+  <script>
+    const charts = [
+      ["#chart1", "charts/map-gardens-size.json"],
+      ["#chart2", "charts/accessibility.json"],
+      ["#chart3", "charts/garden-types.json"],
+      ["#chart4", "charts/garden-establishment-timeline.json"],
+      ["#chart5", "charts/garden-size-distribution.json"],
+      ["#chart6", "charts/public-access-by-type.json"],
+      ["#chart7", "charts/state-garden-type-heatmap.json"],
+      ["#chart8", "charts/garden-size-by-state.json"]
+    ];
+
+    async function renderCharts() {
+      await Promise.all(
+        charts.map(async ([element, spec]) => {
+          const container = document.querySelector(element);
+
+          try {
+            await vegaEmbed(element, spec, {
+              actions: false,
+              renderer: "canvas"
+            });
+          } catch (error) {
+            console.error(`Failed to load ${spec}:`, error);
+            container.textContent =
+              `Could not load ${spec}. Check the file path and browser console.`;
+            container.classList.add("chart-error");
+          }
+        })
+      );
+    }
+
+    renderCharts();
+  </script>
+</body>
+</html>

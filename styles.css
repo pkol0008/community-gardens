@@ -1,0 +1,21 @@
+
+body {
+  margin: 0;
+  padding: 40px 24px;
+  font-family: Arial, sans-serif;
+  color: #252525;
+  background: #faf9f6;
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+#chart {
+  margin-top: 24px;
+}
