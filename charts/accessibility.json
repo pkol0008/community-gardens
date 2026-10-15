@@ -8,7 +8,7 @@
   "layer": [
     {
       "data": {
-        "url": "../data/states.geojson",
+        "url": "data/states.geojson",
         "format": {"type": "json", "property": "features"}
       },
       "mark": {
@@ -20,7 +20,7 @@
     },
     {
       "data": {
-        "url": "../data/ds1.csv",
+        "url": "data/ds1.csv",
         "format": {"type": "csv"}
       },
       "transform": [
