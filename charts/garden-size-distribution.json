@@ -6,7 +6,7 @@
   "width": 650,
   "height": 320,
   "data": {
-    "url": "../data/ds1.csv",
+    "url": "data/ds1.csv",
     "format": {"type": "csv"}
   },
   "transform": [
