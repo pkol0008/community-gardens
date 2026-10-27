@@ -1,64 +1,93 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "How Does Garden Size Vary by State?",
-  "description": "Box plots compare the distribution of recorded garden areas across states and territories.",
-  "width": 650,
-  "height": 360,
+
+  "title": "Which States Have Larger Community Gardens?",
+
+  "description": "Median recorded garden area by state or territory. Medians reduce the influence of unusually large gardens.",
+
+  "width": 600,
+  "height": 350,
+
   "data": {
     "url": "data/ds1.csv",
-    "format": {"type": "csv"}
+    "format": {
+      "type": "csv"
+    }
   },
+
   "transform": [
     {
       "calculate": "datum.state == 'VIC' || datum.state == 'Victoria' ? 'Victoria' : datum.state == 'NSW' || datum.state == 'New South Wales' ? 'New South Wales' : datum.state == 'QLD' || datum.state == 'Queensland' ? 'Queensland' : datum.state == 'SA' || datum.state == 'South Australia' ? 'South Australia' : datum.state == 'WA' || datum.state == 'Western Australia' ? 'Western Australia' : datum.state == 'TAS' || datum.state == 'Tasmania' ? 'Tasmania' : datum.state == 'NT' || datum.state == 'Northern Territory' ? 'Northern Territory' : datum.state == 'ACT' || datum.state == 'Australian Capital Territory' ? 'Australian Capital Territory' : trim(datum.state)",
       "as": "state_name"
     },
+
     {
       "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
       "as": "garden_area"
     },
+
     {
       "filter": "isValid(datum.garden_area) && datum.garden_area > 0 && isValid(datum.state_name) && datum.state_name !== ''"
     }
   ],
+
   "mark": {
-    "type": "boxplot",
-    "extent": 1.5,
-    "size": 42,
-    "color": "#d97991",
-    "outliers": {"size": 18, "opacity": 0.55}
+    "type": "bar",
+    "cornerRadiusEnd": 5,
+    "height": 22,
+    "color": "#b75472"
   },
+
   "encoding": {
-    "x": {
+    "y": {
       "field": "state_name",
       "type": "nominal",
-      "title": "State or territory",
-      "sort": [
-        "Western Australia",
-        "Northern Territory",
-        "South Australia",
-        "Queensland",
-        "New South Wales",
-        "Victoria",
-        "Australian Capital Territory",
-        "Tasmania"
-      ],
-      "axis": {"labelAngle": -30, "labelLimit": 180}
+      "title": null,
+      "sort": "-x",
+
+      "axis": {
+        "labelLimit": 190
+      }
     },
-    "y": {
+
+    "x": {
+      "aggregate": "median",
       "field": "garden_area",
       "type": "quantitative",
-      "scale": {"type": "sqrt", "zero": true},
-      "title": "Garden area (square metres)"
+
+      "scale": {
+        "domainMin": 0,
+        "nice": true
+      },
+
+      "title": "Median garden area (m²)",
+
+      "axis": {
+        "format": "~s",
+        "grid": true
+      }
     },
+
     "tooltip": [
-      {"field": "state_name", "type": "nominal", "title": "State or territory"},
       {
+        "field": "state_name",
+        "type": "nominal",
+        "title": "State or territory"
+      },
+
+      {
+        "aggregate": "median",
         "field": "garden_area",
         "type": "quantitative",
-        "title": "Garden area (m²)",
+        "title": "Median area (m²)",
         "format": ",.0f"
+      },
+
+      {
+        "aggregate": "count",
+        "field": "garden_area",
+        "type": "quantitative",
+        "title": "Gardens recorded"
       }
     ]
   }

@@ -2,9 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 650,
   "height": 550,
+
   "projection": {
     "type": "mercator"
   },
+
   "layer": [
     {
       "data": {
@@ -14,6 +16,7 @@
           "property": "features"
         }
       },
+
       "transform": [
         {
           "calculate": "datum.properties.STATE_NAME",
@@ -37,11 +40,13 @@
           "as": "garden_count"
         }
       ],
+
       "mark": {
         "type": "geoshape",
-        "stroke": "#88857e",
+        "stroke": "#8f8981",
         "strokeWidth": 1
       },
+
       "encoding": {
         "color": {
           "field": "garden_count",
@@ -49,15 +54,30 @@
           "title": "Number of gardens",
           "scale": {
             "domainMin": 0,
-            "range": ["#ffffff", "#c62828"]
+            "range": [
+              "#f7eef1",
+              "#dfbcc7",
+              "#b75472",
+              "#8e3f58"
+            ]
           }
         },
+
         "tooltip": [
-          { "field": "state_name", "type": "nominal", "title": "State" },
-          { "field": "garden_count", "type": "quantitative", "title": "Number of gardens" }
+          {
+            "field": "state_name",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "garden_count",
+            "type": "quantitative",
+            "title": "Number of gardens"
+          }
         ]
       }
     },
+
     {
       "data": {
         "url": "data/ds1.csv",
@@ -69,6 +89,7 @@
           }
         }
       },
+
       "transform": [
         {
           "filter": "isValid(datum.lat) && isValid(datum.long)"
@@ -82,32 +103,68 @@
           "as": "garden_size"
         }
       ],
+
       "mark": {
         "type": "circle",
-        "color": "#1565c0",
-        "opacity": 0.6,
-        "stroke": "#ffffff",
-        "strokeWidth": 0.5
+        "color": "#5f7ea8",
+        "opacity": 0.72,
+        "stroke": "#fcfbf8",
+        "strokeWidth": 0.7
       },
+
       "encoding": {
-        "longitude": { "field": "long", "type": "quantitative" },
-        "latitude": { "field": "lat", "type": "quantitative" },
+        "longitude": {
+          "field": "long",
+          "type": "quantitative"
+        },
+
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+
         "size": {
           "condition": {
             "test": "isValid(datum.garden_size) && datum.garden_size > 0",
             "field": "garden_size",
             "type": "quantitative",
-            "scale": { "type": "sqrt", "range": [30, 500] },
-            "legend": { "title": "Garden area (m²)" }
+            "scale": {
+              "type": "sqrt",
+              "range": [30, 500]
+            },
+            "legend": {
+              "title": "Garden area (m²)"
+            }
           },
           "value": 45
         },
+
         "tooltip": [
-          { "field": "garden", "type": "nominal", "title": "Garden" },
-          { "field": "suburb", "type": "nominal", "title": "Suburb" },
-          { "field": "state_name", "type": "nominal", "title": "State" },
-          { "field": "year_established", "type": "nominal", "title": "Year established" },
-          { "field": "garden_size", "type": "quantitative", "title": "Garden area (m²)" }
+          {
+            "field": "garden",
+            "type": "nominal",
+            "title": "Garden"
+          },
+          {
+            "field": "suburb",
+            "type": "nominal",
+            "title": "Suburb"
+          },
+          {
+            "field": "state_name",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "year_established",
+            "type": "nominal",
+            "title": "Year established"
+          },
+          {
+            "field": "garden_size",
+            "type": "quantitative",
+            "title": "Garden area (m²)"
+          }
         ]
       }
     }

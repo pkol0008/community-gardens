@@ -1,13 +1,20 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
   "title": "When Were the Listed Gardens Established?",
+
   "description": "Counts directory records by their reported establishment year.",
+
   "width": 650,
   "height": 300,
+
   "data": {
     "url": "data/ds1.csv",
-    "format": {"type": "csv"}
+    "format": {
+      "type": "csv"
+    }
   },
+
   "transform": [
     {
       "calculate": "toNumber(trim(datum.year_established))",
@@ -17,24 +24,34 @@
       "filter": "isValid(datum.established_year) && datum.established_year >= 1800 && datum.established_year <= 2026"
     }
   ],
+
   "mark": {
     "type": "line",
-    "point": {"filled": true, "size": 45},
-    "color": "#c85d7c",
+    "point": {
+      "filled": true,
+      "size": 45
+    },
+    "color": "#b75472",
     "strokeWidth": 2.5
   },
+
   "encoding": {
     "x": {
       "field": "established_year",
       "type": "quantitative",
       "title": "Reported establishment year",
-      "axis": {"format": "d", "tickCount": 10}
+      "axis": {
+        "format": "d",
+        "tickCount": 10
+      }
     },
+
     "y": {
       "aggregate": "count",
       "type": "quantitative",
       "title": "Number of directory records"
     },
+
     "tooltip": [
       {
         "field": "established_year",

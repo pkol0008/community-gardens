@@ -1,45 +1,79 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "What Types of Community Gardens Are Listed?",
-  "description": "A ranking of garden types recorded in the directory.",
+
+  "title": "What Kinds of Garden Spaces Are Represented?",
+
+  "description": "The different garden settings represented in the directory.",
+
   "width": 620,
-  "height": {"step": 32},
+
+  "height": {
+    "step": 36
+  },
+
   "data": {
     "url": "data/ds1.csv",
-    "format": {"type": "csv"}
+    "format": {
+      "type": "csv"
+    }
   },
+
   "transform": [
     {
       "filter": "isValid(datum.garden_type) && trim(datum.garden_type) !== ''"
+    },
+
+    {
+      "calculate": "datum.garden_type == 'Community Garden' ? 'General community garden' : datum.garden_type == 'School Garden' ? 'School garden' : datum.garden_type == 'City Farm' ? 'City farm' : datum.garden_type == 'Verge Garden' ? 'Verge garden' : datum.garden_type",
+      "as": "garden_setting"
     }
   ],
+
   "mark": {
     "type": "bar",
-    "color": "#d97991",
+    "color": "#b75472",
     "cornerRadiusEnd": 4
   },
+
   "encoding": {
     "y": {
-      "field": "garden_type",
+      "field": "garden_setting",
       "type": "nominal",
-      "sort": "-x",
-      "title": "Garden type",
-      "axis": {"labelLimit": 250}
+      "title": null,
+
+      "sort": [
+        "General community garden",
+        "School garden",
+        "City farm",
+        "Verge garden",
+        "Other"
+      ],
+
+      "axis": {
+        "labelLimit": 250,
+        "labelFontSize": 12
+      }
     },
+
     "x": {
       "aggregate": "count",
       "field": "garden",
       "type": "quantitative",
-      "title": "Number of listed gardens"
+      "title": "Number of garden records"
     },
+
     "tooltip": [
-      {"field": "garden_type", "type": "nominal", "title": "Garden type"},
+      {
+        "field": "garden_setting",
+        "type": "nominal",
+        "title": "Garden setting"
+      },
+
       {
         "aggregate": "count",
         "field": "garden",
         "type": "quantitative",
-        "title": "Number of gardens"
+        "title": "Records"
       }
     ]
   }

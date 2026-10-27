@@ -1,69 +1,138 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Are Australia's Community Gardens Open to the Public?",
+
+  "title": "How Accessible Are Community Gardens to the Public?",
+
   "width": 650,
   "height": 550,
-  "projection": {"type": "mercator"},
+
+  "projection": {
+    "type": "mercator"
+  },
+
   "layer": [
     {
       "data": {
         "url": "data/states.geojson",
-        "format": {"type": "json", "property": "features"}
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
       },
+
       "mark": {
         "type": "geoshape",
-        "fill": "#f0eee8",
-        "stroke": "#99948b",
+        "fill": "#eeeae3",
+        "stroke": "#aaa39a",
         "strokeWidth": 1
       }
     },
+
     {
       "data": {
         "url": "data/ds1.csv",
-        "format": {"type": "csv"}
+        "format": {
+          "type": "csv"
+        }
       },
+
       "transform": [
-        {"calculate": "toNumber(datum.lat)", "as": "latitude_num"},
-        {"calculate": "toNumber(datum.long)", "as": "longitude_num"},
+        {
+          "calculate": "toNumber(datum.lat)",
+          "as": "latitude_num"
+        },
+        {
+          "calculate": "toNumber(datum.long)",
+          "as": "longitude_num"
+        },
         {
           "filter": "isValid(datum.latitude_num) && isValid(datum.longitude_num)"
+        },
+        {
+          "calculate": "datum.public_access == 'Garden open to the general public at all times' ? 'General public' : datum.public_access == 'Garden regularly open to the public within specific hours (please contact garden for details)' ? 'Specific hours' : datum.public_access == 'Garden open to the public during special events, workshops and open days' ? 'Events & open days' : datum.public_access == 'Garden open to members or clients only' ? 'Members or clients only' : datum.public_access",
+          "as": "access_label"
+        },
+        {
+          "calculate": "datum.access_label == 'General public' ? 1 : datum.access_label == 'Specific hours' ? 2 : datum.access_label == 'Events & open days' ? 3 : datum.access_label == 'Members or clients only' ? 4 : 0",
+          "as": "draw_order"
         }
       ],
+
       "mark": {
         "type": "circle",
-        "size": 65,
-        "opacity": 0.8,
-        "stroke": "#ffffff",
-        "strokeWidth": 0.5
+        "size": 60,
+        "opacity": 0.62,
+        "stroke": "#fcfbf8",
+        "strokeWidth": 1.1
       },
-      "encoding": {
-        "longitude": {"field": "longitude_num", "type": "quantitative"},
-        "latitude": {"field": "latitude_num", "type": "quantitative"},
 
-      "color": {
-        "field": "public_access",
-        "type": "nominal",
-        "title": "Public access",
-        "scale": {
-          "scheme": "category10"
+      "encoding": {
+        "longitude": {
+          "field": "longitude_num",
+          "type": "quantitative"
         },
-        "legend": {
-          "orient": "bottom",
-          "direction": "vertical",
-          "labelLimit": 500,
-          "titleLimit": 500,
-          "columns": 1,
-          "labelFontSize": 11
-        }
-      },
+
+        "latitude": {
+          "field": "latitude_num",
+          "type": "quantitative"
+        },
+
+        "color": {
+          "field": "access_label",
+          "type": "nominal",
+          "title": "Public access",
+
+          "scale": {
+            "domain": [
+              "General public",
+              "Specific hours",
+              "Events & open days",
+              "Members or clients only"
+            ],
+            "range": [
+              "#b75472",
+              "#4f78a8",
+              "#6f8f6f",
+              "#c39a5a"
+            ]
+          },
+
+          "legend": {
+            "orient": "bottom",
+            "direction": "vertical",
+            "columns": 1,
+            "labelLimit": 300,
+            "titleLimit": 300,
+            "labelFontSize": 13,
+            "titleFontSize": 13,
+            "symbolSize": 130,
+            "rowPadding": 5
+          }
+        },
+
+        "order": {
+          "field": "draw_order",
+          "type": "quantitative"
+        },
 
         "tooltip": [
-          {"field": "garden", "type": "nominal", "title": "Garden"},
-          {"field": "suburb", "type": "nominal", "title": "Suburb"},
-          {"field": "state", "type": "nominal", "title": "State"},
           {
-            "field": "public_access",
+            "field": "garden",
+            "type": "nominal",
+            "title": "Garden"
+          },
+          {
+            "field": "suburb",
+            "type": "nominal",
+            "title": "Suburb"
+          },
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "access_label",
             "type": "nominal",
             "title": "Public access"
           }

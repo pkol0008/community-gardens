@@ -1,39 +1,68 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Which Garden Types Are Listed in Each State?",
-  "description": "A heatmap of garden directory records by state or territory and garden type.",
+
+  "title": "How Do Garden Settings Vary Across States?",
+
+  "description": "A comparison of garden settings represented across Australian states and territories.",
+
   "width": 650,
   "height": 320,
+
   "data": {
     "url": "data/ds1.csv",
-    "format": {"type": "csv"}
+    "format": {
+      "type": "csv"
+    }
   },
+
   "transform": [
     {
       "calculate": "datum.state == 'VIC' || datum.state == 'Victoria' ? 'Victoria' : datum.state == 'NSW' || datum.state == 'New South Wales' ? 'New South Wales' : datum.state == 'QLD' || datum.state == 'Queensland' ? 'Queensland' : datum.state == 'SA' || datum.state == 'South Australia' ? 'South Australia' : datum.state == 'WA' || datum.state == 'Western Australia' ? 'Western Australia' : datum.state == 'TAS' || datum.state == 'Tasmania' ? 'Tasmania' : datum.state == 'NT' || datum.state == 'Northern Territory' ? 'Northern Territory' : datum.state == 'ACT' || datum.state == 'Australian Capital Territory' ? 'Australian Capital Territory' : trim(datum.state)",
       "as": "state_name"
     },
+
     {
-      "filter": "isValid(datum.state_name) && datum.state_name !== '' && isValid(datum.garden_type) && trim(datum.garden_type) !== ''"
+      "calculate": "datum.garden_type == 'Community Garden' ? 'General community garden' : datum.garden_type == 'School Garden' ? 'School garden' : datum.garden_type == 'City Farm' ? 'City farm' : datum.garden_type == 'Verge Garden' ? 'Verge garden' : datum.garden_type",
+      "as": "garden_setting"
+    },
+
+    {
+      "filter": "isValid(datum.state_name) && datum.state_name !== '' && isValid(datum.garden_setting) && trim(datum.garden_setting) !== ''"
     }
   ],
+
   "mark": {
     "type": "rect",
-    "stroke": "#ffffff",
+    "stroke": "#fcfbf8",
     "strokeWidth": 1
   },
+
   "encoding": {
     "x": {
-      "field": "garden_type",
+      "field": "garden_setting",
       "type": "nominal",
-      "title": "Garden type",
-      "axis": {"labelAngle": -30, "labelLimit": 180}
+      "title": "Garden setting",
+
+      "sort": [
+        "General community garden",
+        "School garden",
+        "City farm",
+        "Verge garden",
+        "Other"
+      ],
+
+      "axis": {
+        "labelAngle": -30,
+        "labelLimit": 190,
+        "labelFontSize": 12
+      }
     },
+
     "y": {
       "field": "state_name",
       "type": "nominal",
       "title": "State or territory",
+
       "sort": [
         "Western Australia",
         "Northern Territory",
@@ -45,16 +74,36 @@
         "Tasmania"
       ]
     },
+
     "color": {
       "aggregate": "count",
       "field": "garden",
       "type": "quantitative",
       "title": "Garden records",
-      "scale": {"scheme": "reds"}
+
+      "scale": {
+        "range": [
+          "#f7eef1",
+          "#dfbcc7",
+          "#b75472",
+          "#8e3f58"
+        ]
+      }
     },
+
     "tooltip": [
-      {"field": "state_name", "type": "nominal", "title": "State or territory"},
-      {"field": "garden_type", "type": "nominal", "title": "Garden type"},
+      {
+        "field": "state_name",
+        "type": "nominal",
+        "title": "State or territory"
+      },
+
+      {
+        "field": "garden_setting",
+        "type": "nominal",
+        "title": "Garden setting"
+      },
+
       {
         "aggregate": "count",
         "field": "garden",

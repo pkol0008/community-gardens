@@ -1,163 +1,741 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Community Gardens in Australia</title>
+  <title>Growing Together | Community Gardens in Australia</title>
+
   <meta
     name="description"
-    content="Explore the locations, sizes, garden types and recorded public access of community gardens across Australia."
+    content="Explore the geography, size, access and regional patterns of community gardens recorded across Australia."
   >
 
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Vega -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --background: #f7f5f0;
+      --surface: #fcfbf8;
+
+      --text: #262522;
+      --muted: #706d67;
+
+      --berry: #b75472;
+      --berry-dark: #8e3f58;
+
+      --blue: #5f7ea8;
+      --sage: #718f76;
+      --gold: #c39a5a;
+      --purple: #8b719a;
+
+      --border: #e1ddd5;
+
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+
+      background: var(--background);
+      color: var(--text);
+
+      font-family: "DM Sans", Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* INTRO */
+
+    .intro {
+      max-width: 820px;
+      padding: 100px 0 80px;
+    }
+
+    .eyebrow,
+    .section-number {
+      margin: 0 0 14px;
+
+      color: var(--berry);
+
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      margin-top: 0;
+
+      color: #1f1e1c;
+
+      font-family: "DM Serif Display", Georgia, serif;
+      font-weight: 400;
+      line-height: 1.08;
+    }
+
+    h1 {
+      margin-bottom: 22px;
+
+      font-size: clamp(3.3rem, 8vw, 6.4rem);
+      letter-spacing: -0.035em;
+    }
+
+    h2 {
+      margin-bottom: 18px;
+
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    p {
+      max-width: 760px;
+      margin: 0 0 16px;
+
+      font-size: 1rem;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin-bottom: 28px;
+
+      color: #45423e;
+
+      font-size: 1.3rem;
+      line-height: 1.55;
+    }
+
+    .data-note {
+      max-width: 720px;
+
+      padding-left: 18px;
+
+      border-left: 3px solid #dfbcc7;
+
+      color: var(--muted);
+
+      font-size: 0.95rem;
+    }
+
+    /* SECTIONS */
+
+    .chart-section {
+      padding: 72px 0;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .chart-section > p:not(.section-number) {
+      color: #504d48;
+    }
+
+    .chart {
+      margin-top: 34px;
+      padding: 26px;
+
+      overflow-x: auto;
+
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .chart-error {
+      color: var(--berry-dark);
+      font-weight: 600;
+    }
+
+    /* CONCLUSION */
+
+    .conclusion {
+      padding-bottom: 58px;
+    }
+
+    /* REFERENCES */
+
+    .references {
+      padding: 28px 0 60px;
+
+      border-top: 1px solid var(--border);
+
+      color: var(--muted);
+    }
+
+    .references-title {
+      margin-bottom: 14px;
+
+      color: var(--text);
+
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .references p {
+      max-width: 880px;
+
+      margin-bottom: 12px;
+
+      font-size: 0.76rem;
+      line-height: 1.6;
+    }
+
+    .references a {
+      color: var(--berry-dark);
+
+      overflow-wrap: anywhere;
+
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .references a:hover {
+      color: var(--berry);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+      main {
+        width: min(100% - 24px, var(--max-width));
+      }
+
+      .intro {
+        padding: 70px 0 56px;
+      }
+
+      .chart-section {
+        padding: 54px 0;
+      }
+
+      .chart {
+        padding: 14px;
+      }
+
+      .subtitle {
+        font-size: 1.12rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
+
   <main>
+
+    <!-- INTRO -->
+
     <header class="intro">
-      <p class="eyebrow">AUSTRALIA · COMMUNITY · GARDENING</p>
-      <h1>Growing Together</h1>
+
+      <p class="eyebrow">
+        Australia · Community · Gardening
+      </p>
+
+      <h1>
+        Growing Together
+      </h1>
+
       <p class="subtitle">
-        Exploring Australia's community gardens: where they are,
-        what they look like, and how they are recorded as being accessed.
+        A visual exploration of Australia's community gardens:
+        where they are, how large they are, when they were established,
+        and how they are recorded as being accessed.
       </p>
+
       <p class="data-note">
-        This exploration uses a community garden directory.
-        The charts describe the records available in that dataset,
-        which may not represent every community garden in Australia today.
+        This project uses a community garden directory as its primary dataset.
+        The records provide a useful view of community gardening across
+        Australia, but they may not represent every garden operating today.
       </p>
+
     </header>
 
+
+    <!-- 01 -->
+
     <section class="chart-section">
-      <p class="section-number">01 / WHERE</p>
-      <h2>Where are the gardens?</h2>
-      <p>
-        Explore the geographic distribution of listed gardens.
-        The state shading shows the number of directory records,
-        while the circles show individual gardens and their recorded sizes.
+
+      <p class="section-number">
+        01 / Where
       </p>
+
+      <h2>
+        Where are the gardens?
+      </h2>
+
+      <p>
+        We begin with the geographic distribution of community garden records.
+        State shading shows how records are distributed between regions,
+        while individual circles identify garden locations and their
+        recorded sizes.
+      </p>
+
       <div id="chart1" class="chart"></div>
+
     </section>
 
+
+    <!-- 02 -->
+
     <section class="chart-section">
-      <p class="section-number">02 / ACCESS</p>
-      <h2>Are the gardens open to the public?</h2>
-      <p>
-        Explore the recorded public-access categories and where those
-        gardens are located. These categories reflect the directory
-        entries rather than independently verified opening policies.
+
+      <p class="section-number">
+        02 / Access
       </p>
+
+      <h2>
+        Are the gardens open to the public?
+      </h2>
+
+      <p>
+        Location alone does not tell us how these spaces can be used.
+        The directory records several forms of public access, ranging
+        from gardens open to the general public to spaces reserved for
+        members or clients.
+      </p>
+
+      <p>
+        These categories come from the directory and should not be interpreted
+        as independently verified opening policies.
+      </p>
+
       <div id="chart2" class="chart"></div>
+
     </section>
 
+
+    <!-- 03 -->
+
     <section class="chart-section">
-      <p class="section-number">03 / GARDEN TYPES</p>
-      <h2>What kinds of gardens are listed?</h2>
-      <p>
-        Compare the frequency of the garden types recorded in the directory.
-        More records do not necessarily mean a type is more common
-        across the entire country.
+
+      <p class="section-number">
+        03 / Garden settings
       </p>
+
+      <h2>
+        What kinds of garden spaces are represented?
+      </h2>
+
+      <p>
+        Most records describe general community gardens, while the directory
+        also contains school gardens, city farms, verge gardens and a small
+        number of other shared growing spaces.
+      </p>
+
+      <p>
+        These categories describe the kinds of spaces represented in the
+        directory rather than the national prevalence of each setting.
+      </p>
+
       <div id="chart3" class="chart"></div>
+
     </section>
 
+
+    <!-- 04 -->
+
     <section class="chart-section">
-      <p class="section-number">04 / HISTORY</p>
-      <h2>When were the gardens established?</h2>
-      <p>
-        See how reported establishment years are distributed across the
-        listed gardens. This chart counts gardens by their reported
-        establishment year; it does not estimate the total number
-        of gardens that existed in each historical year.
+
+      <p class="section-number">
+        04 / History
       </p>
+
+      <h2>
+        When were these gardens established?
+      </h2>
+
+      <p>
+        The gardens represented in the directory span many decades.
+        Their reported establishment years show when individual sites first
+        appeared and help reveal periods when more of the recorded gardens
+        were established.
+      </p>
+
+      <p>
+        This chart counts records by establishment year. It does not represent
+        the total number of gardens operating in Australia during each year.
+      </p>
+
       <div id="chart4" class="chart"></div>
+
     </section>
 
+
+    <!-- 05 -->
+
     <section class="chart-section">
-      <p class="section-number">05 / SIZE</p>
-      <h2>How large are the gardens?</h2>
-      <p>
-        A histogram groups recorded garden areas into ranges, revealing
-        the spread of garden sizes and whether the directory includes
-        particularly large sites.
+
+      <p class="section-number">
+        05 / Size
       </p>
+
+      <h2>
+        How large are the gardens?
+      </h2>
+
+      <p>
+        Community gardens can occupy very different amounts of space.
+        Grouping recorded areas into ranges reveals the overall size
+        distribution and shows how common smaller and larger sites are
+        within the dataset.
+      </p>
+
       <div id="chart5" class="chart"></div>
+
     </section>
 
+
+    <!-- 06 -->
+
     <section class="chart-section">
-      <p class="section-number">06 / ACCESS & TYPE</p>
-      <h2>Does recorded access vary by garden type?</h2>
-      <p>
-        Compare the proportions of public-access categories within each
-        garden type. Some categories or types may have relatively few
-        records, so interpret small groups cautiously.
+
+      <p class="section-number">
+        06 / Regional size
       </p>
+
+      <h2>
+        Which states have larger gardens?
+      </h2>
+
+      <p>
+        Typical garden size also differs between regions.
+        Using the median reduces the influence of extremely large sites
+        and makes the central garden size in each state easier to compare.
+      </p>
+
       <div id="chart6" class="chart"></div>
+
     </section>
 
+
+    <!-- 07 -->
+
     <section class="chart-section">
-      <p class="section-number">07 / REGIONAL PATTERNS</p>
-      <h2>Which garden types appear across the states?</h2>
-      <p>
-        The heatmap compares counts across states and territories.
-        It helps reveal where directory records are concentrated,
-        but does not adjust for population or the completeness of
-        the directory in each region.
+
+      <p class="section-number">
+        07 / Size distributions
       </p>
+
+      <h2>
+        How do garden sizes differ between states?
+      </h2>
+
+      <p>
+        A median provides a useful summary, but it can hide variation within
+        each region. These distributions show the broader spread of recorded
+        garden sizes across states and territories.
+      </p>
+
+      <p>
+        The horizontal scale is logarithmic so that both smaller gardens and
+        unusually large sites remain visible without extreme values
+        compressing the rest of the distribution.
+      </p>
+
       <div id="chart7" class="chart"></div>
+
     </section>
 
+
+    <!-- 08 -->
+
     <section class="chart-section">
-      <p class="section-number">08 / REGIONAL SIZE</p>
-      <h2>How does garden size vary by state?</h2>
-      <p>
-        Box plots compare the distribution of recorded garden areas.
-        The boxes show the middle half of the observations, while
-        whiskers and outliers help reveal variation within each region.
+
+      <p class="section-number">
+        08 / Access &amp; setting
       </p>
+
+      <h2>
+        Does public access vary by garden setting?
+      </h2>
+
+      <p>
+        Garden setting and public access can also be considered together.
+        This view compares the proportion of access categories within
+        each kind of garden space represented in the directory.
+      </p>
+
+      <p>
+        Some settings contain relatively few records, so proportions for
+        these smaller groups should be interpreted cautiously.
+      </p>
+
       <div id="chart8" class="chart"></div>
+
     </section>
+
+
+    <!-- 09 -->
+
+    <section class="chart-section">
+
+      <p class="section-number">
+        09 / Regional patterns
+      </p>
+
+      <h2>
+        How do garden settings vary across states?
+      </h2>
+
+      <p>
+        The mix of garden settings is not identical across Australia.
+        This heatmap compares the number of records for each setting across
+        states and territories, making regional concentrations easier to see.
+      </p>
+
+      <p>
+        These values are raw directory counts and do not account for
+        differences in population or data coverage between regions.
+      </p>
+
+      <div id="chart9" class="chart"></div>
+
+    </section>
+
+
+    <!-- 10 -->
+
+    <section class="chart-section">
+
+      <p class="section-number">
+        10 / Population context
+      </p>
+
+      <h2>
+        Where are garden records most concentrated relative to population?
+      </h2>
+
+      <p>
+        Raw garden counts can favour more populous states simply because
+        more people live there. To provide another perspective, the directory
+        is compared with state and territory population figures from the
+        2021 Australian Census.
+      </p>
+
+      <p>
+        This map shows the number of garden directory records per 100,000
+        residents. It represents the concentration of records in the dataset,
+        not the true number of operating community gardens per resident.
+      </p>
+
+      <div id="chart10" class="chart"></div>
+
+    </section>
+
+
+    <!-- CONCLUSION -->
+
+    <section class="chart-section conclusion">
+
+      <p class="section-number">
+        Conclusion
+      </p>
+
+      <h2>
+        A varied community garden landscape
+      </h2>
+
+      <p>
+        Taken together, the records show considerable variation in the
+        location, size, age and recorded accessibility of community garden
+        spaces across Australia.
+      </p>
+
+      <p>
+        Looking beyond simple totals also changes the picture. Garden sizes
+        vary both within and between states, while population-adjusted
+        comparisons provide a different geographic perspective from raw
+        counts alone.
+      </p>
+
+      <p>
+        These findings should therefore be interpreted as patterns within
+        the available directory rather than a complete census of every
+        community garden currently operating in Australia.
+      </p>
+
+    </section>
+
+
+    <!-- REFERENCES -->
+
+    <footer class="references">
+
+      <p class="references-title">
+        References
+      </p>
+
+      <p>
+        Community Gardens Australia. (n.d.).
+        <em>Find a Garden Directory</em>.
+        Community Gardens Australia.
+        Available at:
+        <a
+          href="https://communitygarden.org.au/directory/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://communitygarden.org.au/directory/
+        </a>
+        (Accessed: 27 October 2026).
+      </p>
+
+      <p>
+        Australian Bureau of Statistics. (2022).
+        <em>Snapshot of Australia: 2021 Census</em>.
+        Australian Bureau of Statistics.
+        Available at:
+        <a
+          href="https://www.abs.gov.au/statistics/people/people-and-communities/snapshot-australia/2021"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.abs.gov.au/statistics/people/people-and-communities/snapshot-australia/2021
+        </a>
+        (Accessed: 27 October 2026).
+      </p>
+
+    </footer>
+
   </main>
 
+
   <script>
+
     const charts = [
       ["#chart1", "charts/map-gardens-size.json"],
       ["#chart2", "charts/accessibility.json"],
       ["#chart3", "charts/garden-types.json"],
       ["#chart4", "charts/garden-establishment-timeline.json"],
       ["#chart5", "charts/garden-size-distribution.json"],
-      ["#chart6", "charts/public-access-by-type.json"],
-      ["#chart7", "charts/state-garden-type-heatmap.json"],
-      ["#chart8", "charts/garden-size-by-state.json"]
+
+      ["#chart6", "charts/garden-size-by-state.json"],
+      ["#chart7", "charts/garden-size-ridgeline.json"],
+
+      ["#chart8", "charts/public-access-by-type.json"],
+      ["#chart9", "charts/state-garden-type-heatmap.json"],
+
+      ["#chart10", "charts/gardens-per-capita-map.json"]
     ];
 
+
     async function renderCharts() {
+
       await Promise.all(
+
         charts.map(async ([element, spec]) => {
+
           const container = document.querySelector(element);
 
           try {
+
             await vegaEmbed(element, spec, {
+
               actions: false,
-              renderer: "canvas"
+
+              renderer: "canvas",
+
+              config: {
+
+                background: "#fcfbf8",
+
+                font: "DM Sans",
+
+                title: {
+                  font: "DM Serif Display",
+                  fontSize: 20,
+                  fontWeight: "normal",
+                  color: "#262522",
+                  anchor: "start",
+                  offset: 16
+                },
+
+                axis: {
+                  labelFont: "DM Sans",
+                  titleFont: "DM Sans",
+
+                  labelColor: "#625e58",
+                  titleColor: "#393632",
+
+                  domainColor: "#cfc9c0",
+                  tickColor: "#cfc9c0",
+
+                  gridColor: "#e7e2da",
+                  gridOpacity: 0.8,
+
+                  labelFontSize: 11,
+                  titleFontSize: 12
+                },
+
+                legend: {
+                  labelFont: "DM Sans",
+                  titleFont: "DM Sans",
+
+                  labelColor: "#514d48",
+                  titleColor: "#393632",
+
+                  labelFontSize: 13,
+                  titleFontSize: 13,
+
+                  symbolSize: 130,
+                  rowPadding: 5
+                },
+
+                view: {
+                  stroke: null
+                }
+
+              }
+
             });
+
           } catch (error) {
+
             console.error(`Failed to load ${spec}:`, error);
+
             container.textContent =
               `Could not load ${spec}. Check the file path and browser console.`;
+
             container.classList.add("chart-error");
+
           }
+
         })
+
       );
+
     }
 
+
     renderCharts();
+
   </script>
+
 </body>
 </html>

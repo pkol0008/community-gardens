@@ -1,62 +1,129 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "How Does Recorded Public Access Vary by Garden Type?",
-  "description": "The proportion of directory records in each public-access category, grouped by garden type.",
+
+  "title": "Does Public Access Vary by Garden Setting?",
+
+  "description": "The proportion of public-access categories within each garden setting represented in the directory.",
+
   "width": 650,
   "height": 360,
+
   "data": {
     "url": "data/ds1.csv",
-    "format": {"type": "csv"}
+    "format": {
+      "type": "csv"
+    }
   },
+
   "transform": [
     {
       "filter": "isValid(datum.garden_type) && trim(datum.garden_type) !== '' && isValid(datum.public_access) && trim(datum.public_access) !== ''"
+    },
+
+    {
+      "calculate": "datum.garden_type == 'Community Garden' ? 'General community garden' : datum.garden_type == 'School Garden' ? 'School garden' : datum.garden_type == 'City Farm' ? 'City farm' : datum.garden_type == 'Verge Garden' ? 'Verge garden' : datum.garden_type",
+      "as": "garden_setting"
+    },
+
+    {
+      "calculate": "datum.public_access == 'Garden open to the general public at all times' ? 'General public' : datum.public_access == 'Garden regularly open to the public within specific hours (please contact garden for details)' ? 'Specific hours' : datum.public_access == 'Garden open to the public during special events, workshops and open days' ? 'Events & open days' : datum.public_access == 'Garden open to members or clients only' ? 'Members or clients only' : datum.public_access",
+      "as": "access_label"
     }
   ],
+
   "mark": {
     "type": "bar",
-    "stroke": "#ffffff",
-    "strokeWidth": 0.5
+    "stroke": "#fcfbf8",
+    "strokeWidth": 0.7
   },
+
   "encoding": {
     "y": {
-      "field": "garden_type",
+      "field": "garden_setting",
       "type": "nominal",
-      "sort": "-x",
-      "title": "Garden type",
-      "axis": {"labelLimit": 220}
+      "title": null,
+
+      "sort": [
+        "General community garden",
+        "School garden",
+        "City farm",
+        "Verge garden",
+        "Other"
+      ],
+
+      "axis": {
+        "labelLimit": 220,
+        "labelFontSize": 12
+      }
     },
+
     "x": {
       "aggregate": "count",
       "field": "garden",
       "type": "quantitative",
       "stack": "normalize",
       "title": "Share of records",
-      "axis": {"format": ".0%"}
+
+      "axis": {
+        "format": ".0%"
+      }
     },
+
     "color": {
-      "field": "public_access",
+      "field": "access_label",
       "type": "nominal",
-      "title": "Recorded public access",
-      "scale": {"scheme": "tableau10"},
+      "title": "Public access",
+
+      "scale": {
+        "domain": [
+          "General public",
+          "Specific hours",
+          "Events & open days",
+          "Members or clients only"
+        ],
+
+        "range": [
+          "#b75472",
+          "#5f7ea8",
+          "#718f76",
+          "#c39a5a"
+        ]
+      },
+
       "legend": {
         "orient": "bottom",
         "direction": "vertical",
         "columns": 1,
-        "labelLimit": 500,
-        "titleLimit": 500,
-        "labelFontSize": 11
+
+        "labelLimit": 300,
+        "titleLimit": 300,
+
+        "labelFontSize": 13,
+        "titleFontSize": 13,
+
+        "symbolSize": 130,
+        "rowPadding": 5
       }
     },
+
     "tooltip": [
-      {"field": "garden_type", "type": "nominal", "title": "Garden type"},
-      {"field": "public_access", "type": "nominal", "title": "Public access"},
+      {
+        "field": "garden_setting",
+        "type": "nominal",
+        "title": "Garden setting"
+      },
+
+      {
+        "field": "access_label",
+        "type": "nominal",
+        "title": "Public access"
+      },
+
       {
         "aggregate": "count",
         "field": "garden",
         "type": "quantitative",
-        "title": "Records in category"
+        "title": "Records"
       }
     ]
   }
