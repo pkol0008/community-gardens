@@ -1,0 +1,290 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 700,
+  "height": 500,
+  "padding": {
+    "left": 10,
+    "right": 10,
+    "top": 55,
+    "bottom": 25
+  },
+  "background": "#fcfbf8",
+  "title": {
+    "text": "How Do Region, Garden Setting and Public Access Connect?",
+    "anchor": "start",
+    "font": "DM Serif Display",
+    "fontSize": 20,
+    "fontWeight": "normal",
+    "color": "#262522",
+    "offset": 18
+  },
+  "data": [
+    {
+      "name": "links",
+      "url": "data/flow-links.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "Count": "number",
+          "strokeWidth": "number"
+        }
+      }
+    },
+    {
+      "name": "nodes",
+      "url": "data/flow-nodes.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "x": "number",
+          "y": "number",
+          "count": "number"
+        }
+      }
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {
+        "data": "links"
+      },
+      "encode": {
+        "enter": {
+          "path": {
+            "field": "path"
+          },
+          "stroke": {
+            "field": "color"
+          },
+          "strokeOpacity": {
+            "value": 0.28
+          },
+          "strokeWidth": {
+            "field": "strokeWidth"
+          },
+          "fill": {
+            "value": null
+          },
+          "tooltip": {
+            "signal": "{'From': datum.from, 'To': datum.to, 'Records': datum.Count}"
+          }
+        },
+        "update": {
+          "strokeOpacity": {
+            "value": 0.28
+          }
+        },
+        "hover": {
+          "strokeOpacity": {
+            "value": 0.72
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {
+        "data": "nodes"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "datum.x - 10"
+          },
+          "x2": {
+            "signal": "datum.x + 10"
+          },
+          "y": {
+            "signal": "datum.y - 24"
+          },
+          "y2": {
+            "signal": "datum.y + 24"
+          },
+          "fill": {
+            "field": "color"
+          },
+          "stroke": {
+            "value": "#fcfbf8"
+          },
+          "strokeWidth": {
+            "value": 1.5
+          },
+          "cornerRadius": {
+            "value": 3
+          },
+          "tooltip": {
+            "signal": "{'Category': datum.label, 'Records': datum.count}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "nodes"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "signal": "datum.y - 31"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "text": {
+            "field": "label"
+          },
+          "font": {
+            "value": "DM Sans"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": 600
+          },
+          "fill": {
+            "value": "#393632"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "nodes"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "text": {
+            "field": "count"
+          },
+          "font": {
+            "value": "DM Sans"
+          },
+          "fontSize": {
+            "value": 10
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "value": "#ffffff"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 90
+          },
+          "y": {
+            "value": 10
+          },
+          "text": {
+            "value": "REGION"
+          },
+          "align": {
+            "value": "center"
+          },
+          "font": {
+            "value": "DM Sans"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "value": "#706d67"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 350
+          },
+          "y": {
+            "value": 10
+          },
+          "text": {
+            "value": "GARDEN SETTING"
+          },
+          "align": {
+            "value": "center"
+          },
+          "font": {
+            "value": "DM Sans"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "value": "#706d67"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "x": {
+            "value": 610
+          },
+          "y": {
+            "value": 10
+          },
+          "text": {
+            "value": "PUBLIC ACCESS"
+          },
+          "align": {
+            "value": "center"
+          },
+          "font": {
+            "value": "DM Sans"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "value": "#706d67"
+          }
+        }
+      }
+    }
+  ]
+}

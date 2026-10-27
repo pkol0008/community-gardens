@@ -1,55 +1,50 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": "How Do Garden Size Distributions Differ Between States?",
-
-  "description": "Ridgeline plots compare the distribution of recorded community garden sizes across Australian states and territories.",
-
-  "width": 650,
-  "height": 70,
-
+  "description": "Ridgeline plots compare the distribution of recorded community garden sizes.",
   "data": {
     "url": "data/ds1.csv",
     "format": {
       "type": "csv"
     }
   },
-
   "transform": [
     {
       "calculate": "datum.state == 'VIC' || datum.state == 'Victoria' ? 'Victoria' : datum.state == 'NSW' || datum.state == 'New South Wales' ? 'New South Wales' : datum.state == 'QLD' || datum.state == 'Queensland' ? 'Queensland' : datum.state == 'SA' || datum.state == 'South Australia' ? 'South Australia' : datum.state == 'WA' || datum.state == 'Western Australia' ? 'Western Australia' : datum.state == 'TAS' || datum.state == 'Tasmania' ? 'Tasmania' : datum.state == 'NT' || datum.state == 'Northern Territory' ? 'Northern Territory' : datum.state == 'ACT' || datum.state == 'Australian Capital Territory' ? 'Australian Capital Territory' : trim(datum.state)",
       "as": "state_name"
     },
-
     {
       "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
       "as": "garden_area"
     },
-
     {
       "filter": "isValid(datum.garden_area) && datum.garden_area > 0 && isValid(datum.state_name) && datum.state_name !== ''"
     },
-
     {
       "calculate": "log(datum.garden_area) / log(10)",
       "as": "log_area"
     },
-
     {
       "density": "log_area",
-      "groupby": ["state_name"],
-      "as": ["log_area", "density"],
-      "extent": [1, 6],
+      "groupby": [
+        "state_name"
+      ],
+      "as": [
+        "log_area",
+        "density"
+      ],
+      "extent": [
+        1,
+        6
+      ],
       "steps": 120
     }
   ],
-
   "facet": {
     "row": {
       "field": "state_name",
       "type": "nominal",
       "title": null,
-
       "sort": [
         "Western Australia",
         "Northern Territory",
@@ -60,7 +55,6 @@
         "Australian Capital Territory",
         "Tasmania"
       ],
-
       "header": {
         "labelAngle": 0,
         "labelAlign": "left",
@@ -71,11 +65,9 @@
       }
     }
   },
-
   "spec": {
     "width": 650,
     "height": 55,
-
     "layer": [
       {
         "mark": {
@@ -83,63 +75,54 @@
           "interpolate": "monotone",
           "color": "#b75472",
           "opacity": 0.62,
-
           "line": {
             "color": "#8e3f58",
             "strokeWidth": 1.5
           }
         },
-
         "encoding": {
           "x": {
             "field": "log_area",
             "type": "quantitative",
-
             "scale": {
-              "domain": [1, 6]
+              "domain": [
+                1,
+                6
+              ]
             },
-
             "axis": {
-              "title": "Garden area (m²)",
-              "values": [1, 2, 3, 4, 5, 6],
+              "title": "Garden area (m\u00b2)",
+              "values": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
               "labelExpr": "datum.value == 1 ? '10' : datum.value == 2 ? '100' : datum.value == 3 ? '1k' : datum.value == 4 ? '10k' : datum.value == 5 ? '100k' : '1m'",
               "grid": true
             }
           },
-
           "y": {
             "field": "density",
             "type": "quantitative",
             "axis": null,
-
             "scale": {
-              "range": [55, 0]
+              "range": [
+                55,
+                0
+              ]
             }
-          },
-
-          "tooltip": [
-            {
-              "field": "state_name",
-              "type": "nominal",
-              "title": "State or territory"
-            },
-            {
-              "field": "log_area",
-              "type": "quantitative",
-              "title": "Approx. log_10 area",
-              "format": ".2f"
-            }
-          ]
+          }
         }
       },
-
       {
         "mark": {
           "type": "rule",
           "color": "#ded8cf",
           "strokeWidth": 0.7
         },
-
         "encoding": {
           "y": {
             "datum": 0
@@ -148,18 +131,15 @@
       }
     ]
   },
-
   "resolve": {
     "scale": {
       "y": "independent"
     }
   },
-
   "config": {
     "facet": {
       "spacing": -8
     },
-
     "view": {
       "stroke": null
     }

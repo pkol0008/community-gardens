@@ -1,12 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Where Are Community Gardens Recorded?",
   "width": 650,
   "height": 550,
-
   "projection": {
     "type": "mercator"
   },
-
   "layer": [
     {
       "data": {
@@ -16,7 +15,6 @@
           "property": "features"
         }
       },
-
       "transform": [
         {
           "calculate": "datum.properties.STATE_NAME",
@@ -32,7 +30,9 @@
               }
             },
             "key": "State",
-            "fields": ["Count"]
+            "fields": [
+              "Count"
+            ]
           }
         },
         {
@@ -40,18 +40,16 @@
           "as": "garden_count"
         }
       ],
-
       "mark": {
         "type": "geoshape",
         "stroke": "#8f8981",
         "strokeWidth": 1
       },
-
       "encoding": {
         "color": {
           "field": "garden_count",
           "type": "quantitative",
-          "title": "Number of gardens",
+          "title": "Number of garden records",
           "scale": {
             "domainMin": 0,
             "range": [
@@ -62,7 +60,6 @@
             ]
           }
         },
-
         "tooltip": [
           {
             "field": "state_name",
@@ -72,12 +69,11 @@
           {
             "field": "garden_count",
             "type": "quantitative",
-            "title": "Number of gardens"
+            "title": "Garden records"
           }
         ]
       }
     },
-
     {
       "data": {
         "url": "data/ds1.csv",
@@ -89,7 +85,6 @@
           }
         }
       },
-
       "transform": [
         {
           "filter": "isValid(datum.lat) && isValid(datum.long)"
@@ -99,30 +94,26 @@
           "as": "state_name"
         },
         {
-          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), ' ', ''))",
+          "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
           "as": "garden_size"
         }
       ],
-
       "mark": {
         "type": "circle",
         "color": "#5f7ea8",
-        "opacity": 0.72,
+        "opacity": 0.7,
         "stroke": "#fcfbf8",
-        "strokeWidth": 0.7
+        "strokeWidth": 0.8
       },
-
       "encoding": {
         "longitude": {
           "field": "long",
           "type": "quantitative"
         },
-
         "latitude": {
           "field": "lat",
           "type": "quantitative"
         },
-
         "size": {
           "condition": {
             "test": "isValid(datum.garden_size) && datum.garden_size > 0",
@@ -130,15 +121,17 @@
             "type": "quantitative",
             "scale": {
               "type": "sqrt",
-              "range": [30, 500]
+              "range": [
+                28,
+                450
+              ]
             },
             "legend": {
-              "title": "Garden area (m²)"
+              "title": "Garden area (m\u00b2)"
             }
           },
-          "value": 45
+          "value": 42
         },
-
         "tooltip": [
           {
             "field": "garden",
@@ -163,7 +156,8 @@
           {
             "field": "garden_size",
             "type": "quantitative",
-            "title": "Garden area (m²)"
+            "title": "Garden area (m\u00b2)",
+            "format": ",.0f"
           }
         ]
       }

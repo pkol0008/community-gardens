@@ -1,15 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": "How Accessible Are Community Gardens to the Public?",
-
   "width": 650,
   "height": 550,
-
   "projection": {
     "type": "mercator"
   },
-
   "layer": [
     {
       "data": {
@@ -19,7 +15,6 @@
           "property": "features"
         }
       },
-
       "mark": {
         "type": "geoshape",
         "fill": "#eeeae3",
@@ -27,7 +22,6 @@
         "strokeWidth": 1
       }
     },
-
     {
       "data": {
         "url": "data/ds1.csv",
@@ -35,7 +29,6 @@
           "type": "csv"
         }
       },
-
       "transform": [
         {
           "calculate": "toNumber(datum.lat)",
@@ -57,31 +50,36 @@
           "as": "draw_order"
         }
       ],
-
       "mark": {
         "type": "circle",
-        "size": 60,
-        "opacity": 0.62,
+        "opacity": 0.64,
         "stroke": "#fcfbf8",
         "strokeWidth": 1.1
       },
-
       "encoding": {
         "longitude": {
           "field": "longitude_num",
           "type": "quantitative"
         },
-
         "latitude": {
           "field": "latitude_num",
           "type": "quantitative"
         },
-
+        "size": {
+          "condition": {
+            "test": "datum.access_label != 'General public'",
+            "value": 82
+          },
+          "value": 54
+        },
+        "order": {
+          "field": "draw_order",
+          "type": "quantitative"
+        },
         "color": {
           "field": "access_label",
           "type": "nominal",
           "title": "Public access",
-
           "scale": {
             "domain": [
               "General public",
@@ -91,30 +89,21 @@
             ],
             "range": [
               "#b75472",
-              "#4f78a8",
-              "#6f8f6f",
+              "#5f7ea8",
+              "#718f76",
               "#c39a5a"
             ]
           },
-
           "legend": {
             "orient": "bottom",
             "direction": "vertical",
             "columns": 1,
-            "labelLimit": 300,
-            "titleLimit": 300,
             "labelFontSize": 13,
             "titleFontSize": 13,
             "symbolSize": 130,
             "rowPadding": 5
           }
         },
-
-        "order": {
-          "field": "draw_order",
-          "type": "quantitative"
-        },
-
         "tooltip": [
           {
             "field": "garden",

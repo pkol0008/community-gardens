@@ -1,0 +1,28 @@
+from,to,stage,Count,path,color,strokeWidth
+New South Wales,General community garden,Region → setting,144,"M108,105 C208.8,105 231.20000000000002,90 332,90",#b75472,23.1
+New South Wales,Other,Region → setting,1,"M108,105 C208.8,105 231.20000000000002,430 332,430",#92776c,3.3
+New South Wales,Verge garden,Region → setting,2,"M108,105 C208.8,105 231.20000000000002,345 332,345",#c39a5a,4.045584412271571
+Other states & territories,City farm,Region → setting,2,"M108,405 C208.8,405 231.20000000000002,260 332,260",#718f76,4.045584412271571
+Other states & territories,General community garden,Region → setting,171,"M108,405 C208.8,405 231.20000000000002,90 332,90",#b75472,25.03805429511964
+Other states & territories,Other,Region → setting,1,"M108,405 C208.8,405 231.20000000000002,430 332,430",#92776c,3.3
+Other states & territories,School garden,Region → setting,51,"M108,405 C208.8,405 231.20000000000002,175 332,175",#8b719a,14.354571171377131
+Other states & territories,Verge garden,Region → setting,1,"M108,405 C208.8,405 231.20000000000002,345 332,345",#c39a5a,3.3
+Queensland,General community garden,Region → setting,44,"M108,305 C208.8,305 231.20000000000002,90 332,90",#b75472,13.43984924527944
+Queensland,School garden,Region → setting,1,"M108,305 C208.8,305 231.20000000000002,175 332,175",#8b719a,3.3
+Victoria,City farm,Region → setting,1,"M108,205 C208.8,205 231.20000000000002,260 332,260",#718f76,3.3
+Victoria,General community garden,Region → setting,195,"M108,205 C208.8,205 231.20000000000002,90 332,90",#b75472,26.635632078784095
+Victoria,Other,Region → setting,2,"M108,205 C208.8,205 231.20000000000002,430 332,430",#92776c,4.045584412271571
+Victoria,School garden,Region → setting,5,"M108,205 C208.8,205 231.20000000000002,175 332,175",#8b719a,5.524922359499622
+City farm,General public,Setting → access,2,"M368,260 C468.8,260 491.20000000000005,115 592,115",#b75472,4.045584412271571
+City farm,Specific hours,Setting → access,1,"M368,260 C468.8,260 491.20000000000005,215 592,215",#5f7ea8,3.3
+General community garden,Events & open days,Setting → access,26,"M368,90 C468.8,90 491.20000000000005,315 592,315",#718f76,10.678235124467012
+General community garden,General public,Setting → access,507,"M368,90 C468.8,90 491.20000000000005,115 592,115",#b75472,42.02998889711173
+General community garden,Members or clients only,Setting → access,4,"M368,90 C468.8,90 491.20000000000005,415 592,415",#c39a5a,5.1
+General community garden,Specific hours,Setting → access,17,"M368,90 C468.8,90 491.20000000000005,215 592,215",#5f7ea8,8.92159012611179
+Other,Events & open days,Setting → access,1,"M368,430 C468.8,430 491.20000000000005,315 592,315",#718f76,3.3
+Other,General public,Setting → access,2,"M368,430 C468.8,430 491.20000000000005,115 592,115",#b75472,4.045584412271571
+Other,Specific hours,Setting → access,1,"M368,430 C468.8,430 491.20000000000005,215 592,215",#5f7ea8,3.3
+School garden,General public,Setting → access,55,"M368,175 C468.8,175 491.20000000000005,115 592,115",#b75472,14.849157276772194
+School garden,Members or clients only,Setting → access,1,"M368,175 C468.8,175 491.20000000000005,415 592,415",#c39a5a,3.3
+School garden,Specific hours,Setting → access,1,"M368,175 C468.8,175 491.20000000000005,215 592,215",#5f7ea8,3.3
+Verge garden,General public,Setting → access,3,"M368,345 C468.8,345 491.20000000000005,115 592,115",#b75472,4.617691453623979

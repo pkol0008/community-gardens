@@ -1,17 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": "Where Are Garden Records Most Concentrated Relative to Population?",
-
-  "description": "State and territory garden-directory counts are normalised using 2021 Census population. This shows directory records per 100,000 residents, not the true prevalence of all operating community gardens.",
-
+  "description": "Garden-directory counts are normalised using 2021 Census population.",
   "width": 650,
   "height": 550,
-
   "projection": {
     "type": "mercator"
   },
-
   "data": {
     "url": "data/states.geojson",
     "format": {
@@ -19,13 +14,11 @@
       "property": "features"
     }
   },
-
   "transform": [
     {
       "calculate": "datum.properties.STATE_NAME",
       "as": "state_name"
     },
-
     {
       "lookup": "state_name",
       "from": {
@@ -35,12 +28,12 @@
             "type": "csv"
           }
         },
-
         "key": "State",
-        "fields": ["Count"]
+        "fields": [
+          "Count"
+        ]
       }
     },
-
     {
       "lookup": "state_name",
       "from": {
@@ -50,40 +43,35 @@
             "type": "csv"
           }
         },
-
         "key": "State",
-        "fields": ["Population"]
+        "fields": [
+          "Population"
+        ]
       }
     },
-
     {
       "calculate": "toNumber(datum.Count)",
       "as": "garden_count"
     },
-
     {
       "calculate": "toNumber(datum.Population)",
       "as": "population"
     },
-
     {
       "calculate": "datum.garden_count / datum.population * 100000",
       "as": "gardens_per_100k"
     }
   ],
-
   "mark": {
     "type": "geoshape",
     "stroke": "#fcfbf8",
     "strokeWidth": 1.4
   },
-
   "encoding": {
     "color": {
       "field": "gardens_per_100k",
       "type": "quantitative",
       "title": "Records per 100,000 people",
-
       "scale": {
         "range": [
           "#f7eef1",
@@ -93,28 +81,24 @@
         ]
       }
     },
-
     "tooltip": [
       {
         "field": "state_name",
         "type": "nominal",
         "title": "State or territory"
       },
-
       {
         "field": "garden_count",
         "type": "quantitative",
         "title": "Garden records",
         "format": ",.0f"
       },
-
       {
         "field": "population",
         "type": "quantitative",
         "title": "2021 Census population",
         "format": ","
       },
-
       {
         "field": "gardens_per_100k",
         "type": "quantitative",

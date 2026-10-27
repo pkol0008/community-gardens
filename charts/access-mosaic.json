@@ -1,0 +1,171 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": "How Are Public-Access Patterns Distributed Across States?",
+
+  "description": "Each state's width reflects its share of directory records, while the coloured divisions show the mix of recorded public-access categories within that state.",
+
+  "width": 680,
+  "height": 370,
+
+  "data": {
+    "url": "data/access-mosaic.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "#fcfbf8",
+        "strokeWidth": 1.5
+      },
+
+      "encoding": {
+        "x": {
+          "field": "x0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 1]
+          },
+          "axis": null
+        },
+
+        "x2": {
+          "field": "x1"
+        },
+
+        "y": {
+          "field": "y0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 1]
+          },
+          "axis": {
+            "format": ".0%",
+            "title": "Share within state"
+          }
+        },
+
+        "y2": {
+          "field": "y1"
+        },
+
+        "color": {
+          "field": "Access",
+          "type": "nominal",
+          "title": "Public access",
+
+          "scale": {
+            "domain": [
+              "General public",
+              "Specific hours",
+              "Events & open days",
+              "Members or clients only"
+            ],
+            "range": [
+              "#b75472",
+              "#5f7ea8",
+              "#718f76",
+              "#c39a5a"
+            ]
+          },
+
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "columns": 2,
+            "labelFontSize": 13,
+            "titleFontSize": 13,
+            "symbolSize": 130,
+            "rowPadding": 5
+          }
+        },
+
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State or territory"
+          },
+          {
+            "field": "Access",
+            "type": "nominal",
+            "title": "Public access"
+          },
+          {
+            "field": "Count",
+            "type": "quantitative",
+            "title": "Records"
+          },
+          {
+            "field": "AccessShare",
+            "type": "quantitative",
+            "title": "Share within state",
+            "format": ".1%"
+          }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "max",
+              "field": "StateTotal",
+              "as": "StateTotal"
+            }
+          ],
+          "groupby": [
+            "State",
+            "xmid"
+          ]
+        },
+
+        {
+          "calculate": "datum.State == 'New South Wales' ? 'NSW' : datum.State == 'Victoria' ? 'VIC' : datum.State == 'Queensland' ? 'QLD' : datum.State == 'Western Australia' ? 'WA' : datum.State == 'South Australia' ? 'SA' : datum.State == 'Tasmania' ? 'TAS' : datum.State == 'Australian Capital Territory' ? 'ACT' : datum.State == 'Northern Territory' ? 'NT' : datum.State",
+          "as": "state_abbr"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "baseline": "top",
+        "dy": 7,
+        "fontSize": 10,
+        "fontWeight": 700,
+        "color": "#262522"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "xmid",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 1]
+          },
+          "axis": null
+        },
+
+        "y": {
+          "datum": 1
+        },
+
+        "text": {
+          "field": "state_abbr",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

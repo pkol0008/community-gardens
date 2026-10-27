@@ -1,0 +1,14 @@
+label,column,x,y,count,color
+New South Wales,Region,90,105,147,#8e3f58
+Victoria,Region,90,205,203,#5f7ea8
+Queensland,Region,90,305,45,#718f76
+Other states & territories,Region,90,405,226,#92776c
+General community garden,Setting,350,90,554,#b75472
+School garden,Setting,350,175,57,#8b719a
+City farm,Setting,350,260,3,#718f76
+Verge garden,Setting,350,345,3,#c39a5a
+Other,Setting,350,430,4,#92776c
+General public,Access,610,115,569,#b75472
+Specific hours,Access,610,215,20,#5f7ea8
+Events & open days,Access,610,315,27,#718f76
+Members or clients only,Access,610,415,5,#c39a5a

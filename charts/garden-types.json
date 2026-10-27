@@ -1,46 +1,36 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": "What Kinds of Garden Spaces Are Represented?",
-
   "description": "The different garden settings represented in the directory.",
-
   "width": 620,
-
   "height": {
     "step": 36
   },
-
   "data": {
     "url": "data/ds1.csv",
     "format": {
       "type": "csv"
     }
   },
-
   "transform": [
     {
       "filter": "isValid(datum.garden_type) && trim(datum.garden_type) !== ''"
     },
-
     {
       "calculate": "datum.garden_type == 'Community Garden' ? 'General community garden' : datum.garden_type == 'School Garden' ? 'School garden' : datum.garden_type == 'City Farm' ? 'City farm' : datum.garden_type == 'Verge Garden' ? 'Verge garden' : datum.garden_type",
       "as": "garden_setting"
     }
   ],
-
   "mark": {
     "type": "bar",
     "color": "#b75472",
     "cornerRadiusEnd": 4
   },
-
   "encoding": {
     "y": {
       "field": "garden_setting",
       "type": "nominal",
       "title": null,
-
       "sort": [
         "General community garden",
         "School garden",
@@ -48,27 +38,23 @@
         "Verge garden",
         "Other"
       ],
-
       "axis": {
         "labelLimit": 250,
         "labelFontSize": 12
       }
     },
-
     "x": {
       "aggregate": "count",
       "field": "garden",
       "type": "quantitative",
       "title": "Number of garden records"
     },
-
     "tooltip": [
       {
         "field": "garden_setting",
         "type": "nominal",
         "title": "Garden setting"
       },
-
       {
         "aggregate": "count",
         "field": "garden",

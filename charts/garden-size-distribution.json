@@ -1,72 +1,57 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": "How Large Are Community Gardens?",
-
   "description": "Distribution of recorded garden areas in square metres.",
-
   "width": 650,
   "height": 320,
-
   "data": {
     "url": "data/ds1.csv",
     "format": {
       "type": "csv"
     }
   },
-
   "transform": [
     {
       "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
       "as": "garden_area"
     },
-
     {
       "filter": "isValid(datum.garden_area) && datum.garden_area > 0"
     },
-
     {
       "calculate": "datum.garden_area <= 5000 ? floor((datum.garden_area - 1) / 500) * 500 : 5000",
       "as": "bin_start"
     },
-
     {
-      "calculate": "datum.bin_start == 5000 ? '5000+' : (datum.bin_start + 1) + '–' + (datum.bin_start + 500)",
+      "calculate": "datum.bin_start == 5000 ? '5000+' : (datum.bin_start + 1) + '\u2013' + (datum.bin_start + 500)",
       "as": "area_range"
     }
   ],
-
   "mark": {
     "type": "bar",
     "color": "#b75472",
     "stroke": "#fcfbf8",
     "strokeWidth": 1
   },
-
   "encoding": {
     "x": {
       "field": "area_range",
       "type": "ordinal",
-
       "sort": {
         "field": "bin_start",
         "order": "ascending"
       },
-
-      "title": "Garden area (m²)",
-
+      "title": "Garden area (m\u00b2)",
       "axis": {
         "labelAngle": -45,
         "labelLimit": 100
       }
     },
-
     "y": {
       "aggregate": "count",
       "type": "quantitative",
       "title": "Number of gardens"
     },
-
     "tooltip": [
       {
         "field": "area_range",

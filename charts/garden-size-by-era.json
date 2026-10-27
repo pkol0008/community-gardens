@@ -1,0 +1,112 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": "Did Garden Size Change Across Establishment Eras?",
+
+  "description": "Box plots compare recorded garden areas across establishment periods.",
+
+  "width": 650,
+  "height": 360,
+
+  "data": {
+    "url": "data/ds1.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+
+  "transform": [
+    {
+      "calculate": "toNumber(replace(trim(datum.garden_size_sq_metres_), /\\s/g, ''))",
+      "as": "garden_area"
+    },
+
+    {
+      "calculate": "toNumber(trim(datum.year_established))",
+      "as": "year_num"
+    },
+
+    {
+      "filter": "isValid(datum.garden_area) && datum.garden_area > 0 && isValid(datum.year_num) && datum.year_num >= 1900 && datum.year_num <= 2026"
+    },
+
+    {
+      "calculate": "datum.year_num < 1980 ? 'Before 1980' : datum.year_num < 1990 ? '1980s' : datum.year_num < 2000 ? '1990s' : datum.year_num < 2010 ? '2000s' : datum.year_num < 2020 ? '2010s' : '2020s'",
+      "as": "era"
+    }
+  ],
+
+  "mark": {
+    "type": "boxplot",
+    "extent": 1.5,
+    "size": 42,
+    "color": "#b75472",
+
+    "median": {
+      "color": "#262522",
+      "strokeWidth": 1.5
+    },
+
+    "outliers": {
+      "filled": true,
+      "size": 24,
+      "opacity": 0.35
+    }
+  },
+
+  "encoding": {
+    "x": {
+      "field": "era",
+      "type": "ordinal",
+
+      "sort": [
+        "Before 1980",
+        "1980s",
+        "1990s",
+        "2000s",
+        "2010s",
+        "2020s"
+      ],
+
+      "title": "Establishment period",
+
+      "axis": {
+        "labelAngle": 0,
+        "labelPadding": 8
+      }
+    },
+
+    "y": {
+      "field": "garden_area",
+      "type": "quantitative",
+
+      "scale": {
+        "type": "log",
+        "zero": false,
+        "domain": [10, 1000000]
+      },
+
+      "title": "Garden area (m², log scale)",
+
+      "axis": {
+        "values": [
+          10,
+          100,
+          1000,
+          10000,
+          100000,
+          1000000
+        ],
+
+        "labelExpr": "datum.value == 10 ? '10' : datum.value == 100 ? '100' : datum.value == 1000 ? '1k' : datum.value == 10000 ? '10k' : datum.value == 100000 ? '100k' : '1M'",
+
+        "grid": true,
+        "gridColor": "#e7e2da",
+        "gridOpacity": 0.9,
+
+        "tickColor": "#cfc9c0",
+        "domainColor": "#cfc9c0"
+      }
+    }
+  }
+}
